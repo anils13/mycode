@@ -18,7 +18,6 @@ import math
 warnings.simplefilter("ignore")
 starttime = datetime.now()
 wmap = wp.WayMap(edge_width=5)#868325025818719
-#gmaps = googlemaps.Client(key="AIzaSyBs90UUNEoEicdk7Jo5YlATNaJPehCRXdA")#lat_lon_ele_ooty_ch
 #####################################################################################################
 data = pd.read_csv("20_11_2017_Mon/result_20/mysur_ooty/mysur_ooty.csv")#will be use to find elevation#lonavala_route.csv
 ##################################################################################################################################
@@ -57,7 +56,7 @@ ind_turn_2   = pd.DataFrame(data[(data.t_angle>=270)&(data.t_angle<=360)].t_angl
 data_turn_1 = data.ix[ind_turn_1].reset_index(drop=True)#dataframe for column low_turn
 data_turn_2 = data.ix[ind_turn_2].reset_index(drop=True)#dataframe column for C_turn
 #print(data[["Bearing","Bear_ang","t_angle"]])####################################################################################
-print("numer of turn :",len(ind_turn_2)-5) 
+print("numer of turn points :",len(ind_turn_2)-5) 
 #################################################################################################################################
 data[["latitude","longitude","elevation","elev_dup","abs_elev","distance","cum_dist","Bear_ang","t_angle","low_turn","C_turn"]]\
 .to_csv("20_11_2017_Mon/result_20/mysur_ooty/lat_long_ele_my_oty.csv")#lat_long_ele_otych
@@ -71,7 +70,7 @@ try:
 		I_elev = data["elevation"][0]
 		for i in range(len(data["cum_dist"])):
 			if (data["cum_dist"][i] <=I_dist + delta)and(data["cum_dist"][i] >I_dist - delta):
-				#print(data["cum_dist"][i])
+				print(data["cum_dist"][i])
 				change_elev = abs(I_elev - data["elevation"][i])
 				if change_elev >=abs_change_ele:# threshold value for change in elevation
 					alert ="ghat is there after reaching at : "+str(round(data["cum_dist"][i],2))+" "+"KM"
@@ -87,7 +86,7 @@ try:
 	#print(ghat_info[1])# list of index of alert when ghat condition satisfying
 	data_ghat = data.ix[ghat_info[1]].reset_index(drop = True)#taking the index of ghat alert message
 except UnboundLocalError:
-	print("Wrong Input")
+	print("Wrong Input") 
 ####################################################################################################################################
 df = pd.read_csv("20_11_2017_Mon/result_20/mysur_ooty/lat_long_ele_my_oty.csv")#will be use to find cum_dist,elev
 print("\n");print(df["elevation"].describe())#summary of elevation column
@@ -172,7 +171,6 @@ wmap.plot_route(df_down[["latitude","longitude","elevation","cum_dist","Bear_ang
 #wmap.plot_route(df_ele_q2[["latitude","longitude","elevation","cum_dist","Bearing"]].reset_index(drop=True),plot_type="scatter", color="g")
 wmap.draw("20_11_2017_Mon/ups_down_my_ooty.htl")
 #########################################################################################################################################
-################API key for elevation#####"AIzaSyCJmrIYcZq4dekS1sZXhxlsTJEXBQUSyfg"
 #"20_11_2017_Mon/result_20/lonavala/lat_long_ele_lon.csv"
 #"20_11_2017_Mon/result_20/ooty_ch/lat_long_ele_otych.csv"
 #"20_11_2017_Mon/result_20/mysur_ooty/lat_long_ele_my_oty.csv"
